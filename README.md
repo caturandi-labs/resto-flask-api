@@ -6,3 +6,6 @@
 - SQLAlchemy
 - Flask Marshmallow
 - SQLite
+
+## RUN PROJECT
+`pip install -r requirements.txt`
