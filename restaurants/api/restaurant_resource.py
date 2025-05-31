@@ -1,3 +1,4 @@
+from flasgger import swag_from
 from flask_restful import Resource, reqparse, abort
 from flask import request, jsonify
 
@@ -11,6 +12,45 @@ class RestaurantResource(Resource):
     parser.add_argument('name', type=str, required=True, help="name is required")
     parser.add_argument('address', type=str, required=False, help="Address of the restaurant")
 
+    get_restaurant_specs_dict = {
+        "tags": ["Restaurants"],
+        "parameters": [
+            {
+                "name": "restaurant_id",
+                "in": "path",
+                "schema": {
+                    "type": "integer",
+                },
+                "required": False,
+            },
+            {
+                "name": "page",
+                "in": "query",
+                "schema": {
+                    "type": "integer",
+                },
+                "required": False,
+            },
+            {
+                "name": "per_page",
+                "in": "query",
+                "schema": {
+                    "type": "integer",
+                },
+                "required": False,
+            }
+        ],
+        "responses": {
+            "200": {
+                "description": "A single restaurant or a list of restaurants",
+            },
+            "404": {
+                "description": "Restaurant Not found",
+            }
+        }
+    }
+
+    @swag_from(get_restaurant_specs_dict)
     def get(self, restaurant_id=None):
         if restaurant_id:
             restaurant = Restaurant.query.get_or_404(restaurant_id)
